@@ -119,7 +119,7 @@ export function EditTemplateModal({ isOpen, template, onClose, onSuccess }: Edit
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal menyimpan");
 
-      toast.success("Template berhasil diperbarui! ✅");
+      toast.success("Template berhasil diperbarui");
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -163,7 +163,7 @@ export function EditTemplateModal({ isOpen, template, onClose, onSuccess }: Edit
                 <button key={o} type="button" onClick={() => setOrientation(o)}
                   className={`flex-1 py-2 border-2 border-black font-bold text-sm transition-all
                     ${orientation === o ? "bg-yellow shadow-brutal-sm" : "bg-white hover:bg-cream"}`}>
-                  {o === "landscape" ? "🖼 Landscape" : "📄 Portrait"}
+                  {o === "landscape" ? "Landscape (horizontal)" : "Portrait (vertikal)"}
                 </button>
               ))}
             </div>

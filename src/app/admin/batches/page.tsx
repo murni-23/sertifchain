@@ -69,7 +69,7 @@ export default function BatchesPage() {
     e.stopPropagation();
 
     const ok = confirm(
-      `Hapus batch "${batch.name}"?\n\n⚠️ Seluruh data ${batch.total_students} siswa dalam batch ini juga akan ikut terhapus permanen.\n\nLanjutkan?`
+      `Hapus batch "${batch.name}"?\n\nSeluruh data ${batch.total_students} siswa dalam batch ini juga akan ikut terhapus permanen.\n\nLanjutkan?`
     );
     if (!ok) return;
 

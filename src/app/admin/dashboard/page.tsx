@@ -80,9 +80,9 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="bg-yellow border-3 border-black shadow-brutal-lg p-6 rotate-playful-1">
+      <div className="rounded-2xl bg-gradient-to-r from-[#f1e9f8] to-[#fff7db] p-6">
         <h2 className="heading-brutal text-2xl mb-2">
-          Selamat Datang, {session.user?.name}! 👋
+          Selamat datang, {session.user?.name}
         </h2>
         <p className="font-semibold text-black/70">
           Kelola sertifikat siswa bimbel Anda dengan mudah

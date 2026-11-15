@@ -20,6 +20,8 @@ import {
   XCircle,
   Download,
   FileArchive,
+  FileImage,
+  AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 import { BulkUploadStudents } from "@/components/admin/BulkUploadStudents";
@@ -102,7 +104,7 @@ export default function BatchDetailPage() {
   const handleDelete = async () => {
     if (!batch) return;
     const ok = confirm(
-      `Hapus batch "${batch.name}"?\n\n⚠️ Semua data siswa (${batch.total_students} siswa) dalam batch ini juga akan ikut terhapus permanen.\n\nLanjutkan?`
+      `Hapus batch "${batch.name}"?\n\nSemua data siswa (${batch.total_students} siswa) dalam batch ini juga akan ikut terhapus permanen.\n\nLanjutkan?`
     );
     if (!ok) return;
     try {
@@ -168,7 +170,7 @@ export default function BatchDetailPage() {
         ? `${totalStudents} sertifikat berhasil, ${errCount} gagal`
         : `${totalStudents} sertifikat berhasil di-generate!`;
 
-      toast.success(successMsg + " 📦");
+      toast.success(successMsg);
       setDownloadProgress("");
     } catch (err: any) {
       console.error("Download error:", err);
@@ -231,7 +233,12 @@ export default function BatchDetailPage() {
               )}
               {batch.certificate_templates && (
                 <div className="mt-2">
-                  <Badge variant="black">🎨 Template: {batch.certificate_templates.name}</Badge>
+                  <Badge variant="black">
+                    <span className="inline-flex items-center gap-1.5">
+                      <FileImage className="h-3.5 w-3.5" />
+                      Template: {batch.certificate_templates.name}
+                    </span>
+                  </Badge>
                 </div>
               )}
             </div>
@@ -356,9 +363,12 @@ export default function BatchDetailPage() {
             </div>
 
             {/* Info batas */}
-            <div className="mb-4 p-3 bg-pink-light border-2 border-black text-xs font-semibold">
-              ⚠️ Maksimal <strong>200 sertifikat</strong> per download karena batasan server.
+            <div className="mb-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-medium text-amber-950">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
+              <p>
+              Maksimal <strong>200 sertifikat</strong> per download karena batasan server.
               Jika lebih dari 200 siswa, download akan mengambil 200 pertama (diurutkan berdasarkan nama).
+              </p>
             </div>
 
             {/* Tombol download */}

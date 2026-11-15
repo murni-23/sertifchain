@@ -5,7 +5,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
-import { Plus } from "lucide-react";
+import { Check, GraduationCap, Lightbulb, Plus, Sparkles } from "lucide-react";
 
 interface CreateTemplateModalProps {
   isOpen: boolean;
@@ -15,9 +15,9 @@ interface CreateTemplateModalProps {
 
 type StyleOption = "classic" | "kids";
 
-const STYLE_OPTIONS: { value: StyleOption; label: string; desc: string; emoji: string }[] = [
-  { value: "classic", label: "Klasik Elegan", desc: "Navy blue + emas, formal, cocok semua umur", emoji: "🎓" },
-  { value: "kids", label: "Ceria Kids", desc: "Kuning + pink, playful, dekorasi bintang", emoji: "🎉" },
+const STYLE_OPTIONS = [
+  { value: "classic" as const, label: "Klasik Elegan", desc: "Navy blue + emas, formal, cocok semua umur", Icon: GraduationCap },
+  { value: "kids" as const, label: "Ceria Kids", desc: "Kuning + pink, playful, dekorasi bintang", Icon: Sparkles },
 ];
 
 // Preset warna per style
@@ -45,7 +45,7 @@ const COLOR_PRESETS: Record<StyleOption, {
     bgColor: [1.0, 0.98, 0.94],
     textColor: [0.04, 0.04, 0.04],
     titleText: "SERTIFIKAT BINTANG",
-    subtitleText: "Selamat! Kamu Berhasil! 🌟",
+    subtitleText: "Selamat! Kamu Berhasil!",
     footerText: "SertifChain · Sertifikat Digital Bimbel",
   },
 };
@@ -124,7 +124,7 @@ export function CreateTemplateModal({ isOpen, onClose, onSuccess }: CreateTempla
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal membuat template");
 
-      toast.success("Template berhasil dibuat! 🎨");
+      toast.success("Template berhasil dibuat");
       handleClose();
       onSuccess();
     } catch (err: any) {
@@ -157,7 +157,7 @@ export function CreateTemplateModal({ isOpen, onClose, onSuccess }: CreateTempla
           <div key={s} className="flex items-center gap-2">
             <div className={`w-8 h-8 border-2 border-black flex items-center justify-center font-bold text-sm
               ${step === s ? "bg-yellow" : step > s ? "bg-mint" : "bg-cream"}`}>
-              {step > s ? "✓" : s}
+              {step > s ? <Check className="h-4 w-4" /> : s}
             </div>
             <span className="text-sm font-semibold hidden sm:block">
               {s === 1 ? "Info & Style" : "Teks Sertifikat"}
@@ -212,11 +212,13 @@ export function CreateTemplateModal({ isOpen, onClose, onSuccess }: CreateTempla
                         : "bg-white shadow-brutal hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5"
                       }`}
                   >
-                    <div className="text-3xl mb-2">{opt.emoji}</div>
+                    <opt.Icon className="mb-2 h-7 w-7 text-[#68408b]" />
                     <div className="font-bold">{opt.label}</div>
                     <div className="text-xs text-black/60 mt-1">{opt.desc}</div>
                     {selectedStyle === opt.value && (
-                      <div className="mt-2 text-xs font-bold text-mint">✓ Dipilih</div>
+                      <div className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-emerald-700">
+                        <Check className="h-3.5 w-3.5" /> Dipilih
+                      </div>
                     )}
                   </button>
                 ))}
@@ -234,7 +236,12 @@ export function CreateTemplateModal({ isOpen, onClose, onSuccess }: CreateTempla
           <div className="space-y-4">
             <div className="p-3 bg-yellow/30 border-2 border-black">
               <p className="text-sm font-bold">
-                {selectedStyle === "kids" ? "🎉" : "🎓"} Gaya: {selectedStyle === "kids" ? "Ceria Kids" : "Klasik Elegan"}
+                {selectedStyle === "kids" ? (
+                  <Sparkles className="inline h-4 w-4" />
+                ) : (
+                  <GraduationCap className="inline h-4 w-4" />
+                )}{" "}
+                Gaya: {selectedStyle === "kids" ? "Ceria Kids" : "Klasik Elegan"}
                 {" — "}Template: <span className="underline">{formData.name}</span>
               </p>
             </div>
@@ -267,7 +274,8 @@ export function CreateTemplateModal({ isOpen, onClose, onSuccess }: CreateTempla
             />
 
             <div className="p-3 bg-pink-light border-2 border-black text-sm font-semibold">
-              💡 Warna, font, dan layout otomatis mengikuti gaya yang dipilih di langkah sebelumnya.
+              <Lightbulb className="mr-1 inline h-4 w-4" />
+              Warna, font, dan layout otomatis mengikuti gaya yang dipilih di langkah sebelumnya.
             </div>
 
             <div className="flex gap-3 pt-2">

@@ -10,7 +10,15 @@ import { CreateTemplateModal } from "@/components/admin/CreateTemplateModal";
 import { UploadTemplateModal } from "@/components/admin/UploadTemplateModal";
 import { EditTemplateModal } from "@/components/admin/EditTemplateModal";
 import toast from "react-hot-toast";
-import { Plus, FileImage, RefreshCw, Upload, ImageIcon } from "lucide-react";
+import {
+  Plus,
+  FileImage,
+  RefreshCw,
+  Upload,
+  ImageIcon,
+  Lightbulb,
+  Paintbrush,
+} from "lucide-react";
 
 const BUILT_IN_IDS = [
   "a1b2c3d4-0001-0001-0001-000000000001",
@@ -96,7 +104,7 @@ export default function TemplatesPage() {
         <Card variant="yellow">
           <CardContent>
             <div className="flex items-start gap-3 py-2">
-              <div className="text-2xl">💡</div>
+              <Lightbulb className="h-5 w-5 shrink-0 text-[#7650a1]" />
               <div>
                 <p className="font-bold mb-1">Cara pakai template:</p>
                 <ul className="text-sm space-y-1 text-black/80 font-semibold">
@@ -112,7 +120,7 @@ export default function TemplatesPage() {
         <Card variant="mint">
           <CardContent>
             <div className="flex items-start gap-3 py-2">
-              <div className="text-2xl">🎨</div>
+              <Paintbrush className="h-5 w-5 shrink-0 text-[#438167]" />
               <div>
                 <p className="font-bold mb-1">Upload desain sendiri:</p>
                 <ul className="text-sm space-y-1 text-black/80 font-semibold">

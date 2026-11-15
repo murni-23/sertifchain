@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { TemplatePreviewCard } from "@/components/admin/TemplatePreviewCard";
 import type { TemplateItem } from "@/components/admin/TemplatePreviewCard";
 import toast from "react-hot-toast";
-import { Plus, FileImage } from "lucide-react";
+import { Check, Plus, FileImage } from "lucide-react";
 
 interface CreateBatchModalProps {
   isOpen: boolean;
@@ -84,7 +84,7 @@ export function CreateBatchModal({ isOpen, onClose, onSuccess }: CreateBatchModa
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal membuat batch");
 
-      toast.success("Batch berhasil dibuat! 🎉");
+      toast.success("Batch berhasil dibuat");
       handleClose();
       onSuccess();
     } catch (err: any) {
@@ -113,7 +113,7 @@ export function CreateBatchModal({ isOpen, onClose, onSuccess }: CreateBatchModa
           <div key={s} className="flex items-center gap-2">
             <div className={`w-8 h-8 border-2 border-black flex items-center justify-center font-bold text-sm
               ${step === s ? "bg-yellow" : step > s ? "bg-mint" : "bg-cream"}`}>
-              {step > s ? "✓" : s}
+              {step > s ? <Check className="h-4 w-4" /> : s}
             </div>
             <span className="text-sm font-semibold hidden sm:block">
               {s === 1 ? "Info Batch" : "Pilih Template"}
@@ -211,14 +211,19 @@ export function CreateBatchModal({ isOpen, onClose, onSuccess }: CreateBatchModa
               className={`w-full py-2 border-2 border-black text-sm font-bold transition-all flex-shrink-0
                 ${!selectedTemplateId ? "bg-yellow" : "bg-white hover:bg-cream"}`}
             >
-              {!selectedTemplateId ? "✓ Tanpa Template (pakai default)" : "Gunakan Template Default"}
+              {!selectedTemplateId ? (
+                <span className="inline-flex items-center justify-center gap-1.5">
+                  <Check className="h-4 w-4" />
+                  Tanpa Template (pakai default)
+                </span>
+              ) : "Gunakan Template Default"}
             </button>
 
             {/* Info template terpilih */}
             <div className={`px-3 py-2 border-2 border-black text-sm font-bold flex-shrink-0 transition-colors
               ${selectedTemplate ? "bg-mint/30" : "bg-cream text-black/50"}`}>
               {selectedTemplate
-                ? <>✓ Template dipilih: <span className="underline">{selectedTemplate.name}</span></>
+                ? <><Check className="mr-1 inline h-4 w-4" />Template dipilih: <span className="underline">{selectedTemplate.name}</span></>
                 : "Tidak ada template dipilih — akan pakai desain default"}
             </div>
 

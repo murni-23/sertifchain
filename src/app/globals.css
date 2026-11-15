@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --app-border: #e5eaf0;
-  --app-primary: #2878b8;
-  --app-primary-hover: #21699f;
-  --app-shadow: 0 4px 16px rgba(31, 41, 55, 0.08);
+  --app-border: #eee9f3;
+  --app-primary: #5b2b82;
+  --app-primary-hover: #472064;
+  --app-shadow: 0 8px 24px rgba(54, 34, 72, 0.07);
 }
 
 @layer base {
@@ -25,47 +25,47 @@
 
 @layer components {
   .btn-brutal {
-    @apply relative inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .btn-brutal-yellow {
-    @apply btn-brutal bg-[#2878b8] text-white shadow-sm hover:bg-[#21699f];
+    @apply btn-brutal bg-[#5b2b82] text-white shadow-sm hover:bg-[#472064];
   }
 
   .btn-brutal-pink {
-    @apply btn-brutal bg-pink text-[#81465d] shadow-sm hover:bg-pink-light;
+    @apply btn-brutal bg-[#f1e9f8] text-[#5b2b82] shadow-sm hover:bg-[#e8dcf2];
   }
 
   .btn-brutal-mint {
-    @apply btn-brutal bg-mint text-[#28634d] shadow-sm hover:bg-[#dcefe5];
+    @apply btn-brutal bg-emerald-50 text-emerald-800 shadow-sm hover:bg-emerald-100;
   }
 
   .btn-brutal-white {
-    @apply btn-brutal border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50;
+    @apply btn-brutal border border-[#e8e2ed] bg-white text-[#5f5668] shadow-sm hover:bg-[#faf8fc];
   }
 
   .btn-brutal-black {
-    @apply btn-brutal bg-slate-700 text-white shadow-sm hover:bg-slate-800;
+    @apply btn-brutal bg-[#34243f] text-white shadow-sm hover:bg-[#241a2c];
   }
 
   .input-brutal {
-    @apply w-full rounded-md border border-slate-200 bg-white px-4 py-3 font-medium text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-[#2878b8] focus:outline-none focus:ring-2 focus:ring-[#2878b8]/15;
+    @apply w-full rounded-xl border border-[#e8e2ed] bg-white px-4 py-3 font-medium text-[#30243b] shadow-sm transition placeholder:text-slate-400 focus:border-[#8253a6] focus:outline-none focus:ring-2 focus:ring-[#8253a6]/15;
   }
 
   .card-brutal {
-    @apply rounded-lg border border-slate-200 bg-white p-6 shadow-sm;
+    @apply rounded-2xl border border-[#eee9f3] bg-white p-6 shadow-[0_8px_24px_rgba(54,34,72,0.05)];
   }
 
   .card-brutal-yellow {
-    @apply rounded-lg border border-slate-200 bg-yellow-light p-6 shadow-sm;
+    @apply rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-[0_8px_24px_rgba(54,34,72,0.04)];
   }
 
   .card-brutal-pink {
-    @apply rounded-lg border border-slate-200 bg-pink-light p-6 shadow-sm;
+    @apply rounded-2xl border border-[#eee9f3] bg-[#f7f3fa] p-6 shadow-[0_8px_24px_rgba(54,34,72,0.04)];
   }
 
   .card-brutal-mint {
-    @apply rounded-lg border border-slate-200 bg-mint/30 p-6 shadow-sm;
+    @apply rounded-2xl border border-emerald-200 bg-emerald-50 p-6 shadow-[0_8px_24px_rgba(54,34,72,0.04)];
   }
 
   .badge-brutal {
@@ -73,11 +73,11 @@
   }
 
   .heading-brutal {
-    @apply font-heading font-semibold tracking-tight text-slate-800;
+    @apply font-heading font-semibold tracking-tight text-[#30243b];
   }
 
   .link-brutal {
-    @apply inline-block font-semibold text-[#2878b8] transition-colors hover:text-[#21699f];
+    @apply inline-block font-semibold text-[#5b2b82] transition-colors hover:text-[#472064];
   }
 
   .container-brutal {

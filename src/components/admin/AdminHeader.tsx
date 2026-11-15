@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Bell } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 const pageTitles: Record<string, { title: string; description: string }> = {
   "/admin/dashboard": {
@@ -30,25 +30,23 @@ export function AdminHeader() {
   };
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between">
+    <header className="sticky top-0 z-10 border-b border-[#eee9f3] bg-white/95">
+      <div className="px-5 py-4 sm:px-7">
+        <div className="flex items-center justify-between gap-4">
           {/* Page Title */}
           <div>
-            <h1 className="heading-brutal text-2xl mb-1">{pageInfo.title}</h1>
-            <p className="text-sm text-slate-500">
+            <h1 className="heading-brutal mb-1 text-xl sm:text-2xl">{pageInfo.title}</h1>
+            <p className="hidden text-sm text-[#81788a] sm:block">
               {pageInfo.description}
             </p>
           </div>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <button
-              className="p-3 rounded-md bg-white border border-slate-200 text-slate-600 shadow-sm hover:bg-slate-50 transition-colors"
-              aria-label="Notifikasi"
-            >
-              <Bell className="w-5 h-5" />
-            </button>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#eee9f3] bg-[#faf8fc] px-3 py-2 text-xs font-semibold text-[#68408b]">
+              <ShieldCheck className="h-4 w-4" />
+              <span className="hidden sm:inline">Admin workspace</span>
+            </span>
           </div>
         </div>
       </div>

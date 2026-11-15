@@ -17,15 +17,15 @@ export default async function StudentsLayout({
   }
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex min-h-screen flex-col bg-[#fbfaff] md:h-screen md:min-h-0 md:flex-row">
       <AdminSidebar
         userName={session.user?.name}
         userEmail={session.user?.email}
       />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col md:overflow-hidden">
         <AdminHeader />
-        <main className="flex-1 overflow-y-auto">
-          <div className="container-brutal py-8">{children}</div>
+        <main className="flex-1 md:overflow-y-auto">
+          <div className="container-brutal py-6 sm:py-8">{children}</div>
         </main>
       </div>
     </div>

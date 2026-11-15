@@ -156,7 +156,7 @@ export function BulkUploadStudents({
         throw new Error(data.error || "Failed to upload students");
       }
 
-      toast.success(`Berhasil menambahkan ${data.inserted} siswa! 🎉`);
+      toast.success(`Berhasil menambahkan ${data.inserted} siswa`);
       setParsedData([]);
       setFileName("");
       onSuccess();

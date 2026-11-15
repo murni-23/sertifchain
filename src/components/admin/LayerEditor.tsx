@@ -232,7 +232,7 @@ export function LayerEditor({
                       onClick={() => updatePos(selectedIdx, { align: a })}
                       className={`flex-1 py-2 border-2 border-black text-sm font-bold transition-all
                         ${sel.align === a ? "bg-yellow shadow-brutal-sm" : "bg-white hover:bg-cream"}`}>
-                      {a === "left" ? "⬅ Kiri" : a === "center" ? "↔ Tengah" : "Kanan ➡"}
+                      {a === "left" ? "Kiri" : a === "center" ? "Tengah" : "Kanan"}
                     </button>
                   ))}
                 </div>

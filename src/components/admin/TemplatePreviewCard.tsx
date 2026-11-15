@@ -2,7 +2,18 @@
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Trash2, CheckCircle, FileImage, Pencil, ImageIcon } from "lucide-react";
+import {
+  Trash2,
+  CheckCircle,
+  Check,
+  FileImage,
+  Pencil,
+  ImageIcon,
+  GraduationCap,
+  Sparkles,
+  Star,
+  Settings2,
+} from "lucide-react";
 
 export interface TemplateItem {
   id: string;
@@ -38,10 +49,10 @@ function toRgbCss(arr?: [number, number, number]): string {
 }
 
 function StyleBadge({ style, hasImage }: { style: string; hasImage?: boolean }) {
-  if (hasImage) return <Badge variant="mint">🖼 Upload Gambar</Badge>;
-  if (style === "kids") return <Badge variant="pink">🎉 Ceria Kids</Badge>;
-  if (style === "classic") return <Badge variant="black">🎓 Klasik Elegan</Badge>;
-  return <Badge variant="yellow">⚙️ Custom</Badge>;
+  if (hasImage) return <Badge variant="mint"><ImageIcon className="mr-1 h-3.5 w-3.5" />Upload Gambar</Badge>;
+  if (style === "kids") return <Badge variant="pink"><Sparkles className="mr-1 h-3.5 w-3.5" />Ceria Kids</Badge>;
+  if (style === "classic") return <Badge variant="black"><GraduationCap className="mr-1 h-3.5 w-3.5" />Klasik Elegan</Badge>;
+  return <Badge variant="yellow"><Settings2 className="mr-1 h-3.5 w-3.5" />Custom</Badge>;
 }
 
 // Mini preview untuk template dengan background gambar
@@ -121,8 +132,8 @@ function GeneratedTemplateMiniPreview({ config }: { config: TemplateItem["config
       </text>
       {isKids && (
         <>
-          <text x="24" y="40" fontSize="12" fill={secondary} fontFamily="sans-serif">★</text>
-          <text x="252" y="40" fontSize="12" fill={secondary} fontFamily="sans-serif">★</text>
+          <Star x="16" y="29" width="16" height="16" fill={secondary} stroke={secondary} />
+          <Star x="244" y="29" width="16" height="16" fill={secondary} stroke={secondary} />
         </>
       )}
       {isKids ? (
@@ -268,7 +279,12 @@ export function TemplatePreviewCard({
         {selectable && (
           <div className={`w-full py-2 border-2 border-black text-center font-bold text-sm transition-all
             ${isSelected ? "bg-mint" : "bg-cream hover:bg-yellow/50"}`}>
-            {isSelected ? "✓ Dipilih" : "Pilih Template Ini"}
+            {isSelected ? (
+              <span className="inline-flex items-center gap-1">
+                <Check className="h-4 w-4" />
+                Dipilih
+              </span>
+            ) : "Pilih Template Ini"}
           </div>
         )}
       </div>

@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion, MotionConfig } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Confetti } from "@/components/decorations/Confetti";
 import toast from "react-hot-toast";
 import {
-  Award, Download, CheckCircle, ArrowLeft,
-  Calendar, Hash, FolderKanban, Sparkles,
+  Award, Download, CheckCircle, ArrowLeft, XCircle, ShieldCheck,
+  Calendar, Hash, FolderKanban, Sparkles, Star,
 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -158,8 +159,8 @@ function CertificatePreview({ student, template }: { student: Student; template:
             </h2>
             {isKids && (
               <>
-                <span className="absolute left-4 text-xl" style={{ color: secondary }}>★</span>
-                <span className="absolute right-4 text-xl" style={{ color: secondary }}>★</span>
+                <Star className="absolute left-4 h-4 w-4" style={{ color: secondary }} fill="currentColor" />
+                <Star className="absolute right-4 h-4 w-4" style={{ color: secondary }} fill="currentColor" />
               </>
             )}
           </div>
@@ -263,7 +264,7 @@ export default function ClaimPage() {
       const data = await response.json();
       if (!response.ok) { toast.error(data.error || "Gagal mengklaim"); return; }
 
-      toast.success("Sertifikat berhasil diklaim! 🎉");
+      toast.success("Sertifikat berhasil diklaim");
       setStudent(data.student);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3500);
@@ -282,10 +283,10 @@ export default function ClaimPage() {
   // ── Loading ──
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-[#fbfaff]">
         <div className="text-center">
-          <div className="inline-block w-16 h-16 border-3 border-black border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="font-semibold text-black/60">Memuat sertifikat...</p>
+          <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-2 border-[#5b2b82] border-t-transparent" />
+          <p className="font-medium text-[#81788a]">Memuat sertifikat...</p>
         </div>
       </div>
     );
@@ -294,14 +295,20 @@ export default function ClaimPage() {
   // ── Not found ──
   if (!student) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center p-4">
-        <Card variant="white">
+      <div className="flex min-h-screen items-center justify-center bg-[#fbfaff] p-4">
+        <Card variant="white" className="!rounded-3xl !border-[#eee9f3] !shadow-[0_12px_36px_rgba(54,34,72,0.06)]">
           <CardContent>
             <div className="text-center py-12">
-              <div className="text-6xl mb-4">❌</div>
-              <h2 className="heading-brutal text-2xl mb-2">Sertifikat Tidak Ditemukan</h2>
-              <p className="text-black/60 mb-6">Data tidak ditemukan atau sudah dihapus.</p>
-              <Link href="/"><Button variant="yellow">Kembali ke Beranda</Button></Link>
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
+                <XCircle className="h-7 w-7" />
+              </div>
+              <h2 className="mb-2 text-2xl font-bold text-[#30243b]">Sertifikat tidak ditemukan</h2>
+              <p className="mb-6 text-[#81788a]">Data tidak ditemukan atau sudah dihapus.</p>
+              <Link href="/">
+                <Button variant="black" className="!rounded-xl !bg-[#5b2b82] hover:!bg-[#472064]">
+                  Kembali ke beranda
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -313,42 +320,56 @@ export default function ClaimPage() {
   const template  = (student.batches as any)?.certificate_templates ?? null;
 
   return (
-    <div className="min-h-screen bg-cream relative">
+    <MotionConfig reducedMotion="user">
+    <div className="relative min-h-screen bg-[#fbfaff] text-[#292333]">
       {showConfetti && <Confetti count={35} />}
 
       {/* Nav */}
-      <nav className="border-b-3 border-black bg-white sticky top-0 z-20">
-        <div className="container-brutal py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-yellow border-3 border-black shadow-brutal flex items-center justify-center">
-              <Award className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="heading-brutal text-xl leading-tight">SertifChain</h1>
-              <p className="text-xs font-bold text-black/60">Sertifikat Digital</p>
-            </div>
-          </div>
-          <Link href="/">
-            <Button variant="white" leftIcon={<ArrowLeft className="w-4 h-4" />}>Beranda</Button>
+      <header className="sticky top-0 z-20 border-b border-[#eee9f3] bg-white/95">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+          <Link href="/" className="flex items-center gap-3" aria-label="SertifChain beranda">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#5b2b82] text-white shadow-[0_8px_20px_rgba(91,43,130,0.2)]">
+              <Award className="h-6 w-6" fill="currentColor" strokeWidth={1.8} />
+            </span>
+            <span className="leading-tight">
+              <span className="block text-lg font-bold tracking-tight text-[#3d2057]">
+                Sertif<span className="text-[#7650a1]">Chain</span>
+              </span>
+              <span className="block text-[11px] font-medium tracking-wide text-[#81788a]">
+                SERTIFIKAT DIGITAL
+              </span>
+            </span>
           </Link>
-        </div>
-      </nav>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-[#5b2b82] transition-colors hover:bg-[#f5effa]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Beranda
+          </Link>
+        </nav>
+      </header>
 
       {/* Content */}
-      <div className="container-brutal py-10">
-        <div className="max-w-3xl mx-auto space-y-6">
+      <main className="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto max-w-3xl space-y-6"
+        >
 
           {/* Status Banner */}
           {isClaimed ? (
-            <Card variant="mint">
+            <Card variant="mint" className="!rounded-2xl !border-emerald-200 !bg-emerald-50 !shadow-none">
               <CardContent>
                 <div className="flex items-center gap-4 py-3">
-                  <div className="p-3 bg-mint border-3 border-black shadow-brutal flex-shrink-0">
-                    <CheckCircle className="w-7 h-7" />
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white text-emerald-600">
+                    <CheckCircle className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="heading-brutal text-xl mb-0.5">Sertifikat Sudah Diklaim! 🎉</h3>
-                    <p className="text-sm text-black/70 font-semibold">
+                    <h3 className="mb-0.5 text-lg font-bold text-emerald-900">Sertifikat sudah diklaim</h3>
+                    <p className="text-sm text-emerald-800">
                       Diklaim pada{" "}
                       {student.claimed_at &&
                         new Date(student.claimed_at).toLocaleDateString("id-ID", {
@@ -360,16 +381,16 @@ export default function ClaimPage() {
               </CardContent>
             </Card>
           ) : (
-            <Card variant="yellow">
+            <Card variant="yellow" className="!rounded-2xl !border-amber-200 !bg-amber-50 !shadow-none">
               <CardContent>
                 <div className="flex items-center gap-4 py-3">
-                  <div className="p-3 bg-orange border-3 border-black shadow-brutal flex-shrink-0">
-                    <Sparkles className="w-7 h-7" />
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white text-amber-700">
+                    <Sparkles className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="heading-brutal text-xl mb-0.5">Sertifikat Ditemukan!</h3>
-                    <p className="text-sm text-black/70 font-semibold">
-                      Klik "Klaim Sertifikat" untuk mengambil sertifikat Anda
+                    <h3 className="mb-0.5 text-lg font-bold text-amber-950">Sertifikat ditemukan</h3>
+                    <p className="text-sm text-amber-900">
+                      Klaim sertifikat Anda untuk mengunduh salinannya.
                     </p>
                   </div>
                 </div>
@@ -378,7 +399,7 @@ export default function ClaimPage() {
           )}
 
           {/* Preview Sertifikat — gambar asli atau generated */}
-          <Card variant="white">
+          <Card variant="white" className="!rounded-2xl !border-[#eee9f3] !shadow-[0_12px_36px_rgba(54,34,72,0.06)]">
             <CardHeader>
               <CardTitle as="h2">Preview Sertifikat</CardTitle>
               <CardDescription>Tampilan sertifikat yang akan Anda terima</CardDescription>
@@ -389,38 +410,38 @@ export default function ClaimPage() {
           </Card>
 
           {/* Detail info */}
-          <Card variant="white">
+          <Card variant="white" className="!rounded-2xl !border-[#eee9f3] !shadow-[0_12px_36px_rgba(54,34,72,0.06)]">
             <CardHeader>
               <CardTitle as="h3">Detail Sertifikat</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-4 bg-cream border-2 border-black">
-                  <Hash className="w-5 h-5 text-black/60 flex-shrink-0" />
+                <div className="flex items-center gap-3 rounded-xl border border-[#eee9f3] bg-[#faf8fc] p-4">
+                  <Hash className="h-5 w-5 flex-shrink-0 text-[#896da0]" />
                   <div className="flex-1">
-                    <p className="text-xs font-bold text-black/60 uppercase">Kode Unik</p>
-                    <code className="text-lg font-bold">{student.unique_code}</code>
+                    <p className="text-xs font-semibold uppercase text-[#81788a]">Kode unik</p>
+                    <code className="text-lg font-semibold text-[#30243b]">{student.unique_code}</code>
                   </div>
                   <Badge variant="yellow">Terverifikasi</Badge>
                 </div>
 
-                <div className="flex items-center gap-3 p-4 bg-cream border-2 border-black">
-                  <FolderKanban className="w-5 h-5 text-black/60 flex-shrink-0" />
+                <div className="flex items-center gap-3 rounded-xl border border-[#eee9f3] bg-[#faf8fc] p-4">
+                  <FolderKanban className="h-5 w-5 flex-shrink-0 text-[#896da0]" />
                   <div className="flex-1">
-                    <p className="text-xs font-bold text-black/60 uppercase">Batch / Program</p>
-                    <p className="font-bold">{student.batches.name}</p>
+                    <p className="text-xs font-semibold uppercase text-[#81788a]">Batch / program</p>
+                    <p className="font-semibold text-[#30243b]">{student.batches.name}</p>
                     {student.batches.description && (
-                      <p className="text-sm text-black/60">{student.batches.description}</p>
+                      <p className="text-sm text-[#81788a]">{student.batches.description}</p>
                     )}
                   </div>
                 </div>
 
                 {isClaimed && student.claimed_at && (
-                  <div className="flex items-center gap-3 p-4 bg-cream border-2 border-black">
-                    <Calendar className="w-5 h-5 text-black/60 flex-shrink-0" />
+                  <div className="flex items-center gap-3 rounded-xl border border-[#eee9f3] bg-[#faf8fc] p-4">
+                    <Calendar className="h-5 w-5 flex-shrink-0 text-[#896da0]" />
                     <div>
-                      <p className="text-xs font-bold text-black/60 uppercase">Tanggal Klaim</p>
-                      <p className="font-bold">
+                      <p className="text-xs font-semibold uppercase text-[#81788a]">Tanggal klaim</p>
+                      <p className="font-semibold text-[#30243b]">
                         {new Date(student.claimed_at).toLocaleDateString("id-ID", {
                           day: "numeric", month: "long", year: "numeric",
                           hour: "2-digit", minute: "2-digit",
@@ -434,40 +455,40 @@ export default function ClaimPage() {
               {/* Tombol aksi */}
               <div className="mt-6 space-y-3">
                 {!isClaimed ? (
-                  <Button variant="yellow" className="w-full" onClick={handleClaim}
+                  <Button variant="black" className="!w-full !rounded-xl !bg-[#5b2b82] hover:!bg-[#472064]" onClick={handleClaim}
                     isLoading={isClaiming} rightIcon={<CheckCircle className="w-5 h-5" />}>
                     Klaim Sertifikat
                   </Button>
                 ) : (
                   <>
-                    <Button variant="mint" className="w-full" onClick={handleDownload}
+                    <Button variant="black" className="!w-full !rounded-xl !bg-[#5b2b82] hover:!bg-[#472064]" onClick={handleDownload}
                       rightIcon={<Download className="w-5 h-5" />}>
                       Download Sertifikat PDF
                     </Button>
                     {/* Tombol verifikasi keaslian */}
                     <Link href={`/verify?code=${student.unique_code}`} target="_blank">
-                      <Button variant="white" className="w-full"
-                        leftIcon={<span>🔗</span>}>
+                      <Button variant="white" className="!w-full !rounded-xl !border-[#e8e2ed] !shadow-none"
+                        leftIcon={<ShieldCheck className="h-4 w-4" />}>
                         Verifikasi Keaslian di Blockchain
                       </Button>
                     </Link>
                   </>
                 )}
                 <Link href="/">
-                  <Button variant="white" className="w-full">Kembali ke Beranda</Button>
+                  <Button variant="white" className="!w-full !rounded-xl !border-[#e8e2ed] !shadow-none">Kembali ke Beranda</Button>
                 </Link>
               </div>
             </CardContent>
           </Card>
 
           {/* Info card */}
-          <Card variant="pink">
+          <Card variant="pink" className="!rounded-2xl !border-[#eee9f3] !bg-[#f7f3fa] !shadow-none">
             <CardContent>
               <div className="py-3">
                 <h4 className="font-bold mb-2 flex items-center gap-2">
                   <Award className="w-5 h-5" /> Tentang Sertifikat Digital
                 </h4>
-                <ul className="text-sm space-y-1 text-black/80 font-semibold">
+                <ul className="space-y-2 text-sm font-medium text-[#6e6478]">
                   <li>• Sertifikat dapat didownload dalam format PDF setelah diklaim</li>
                   <li>• Sertifikat yang sudah diklaim tidak bisa diklaim ulang</li>
                   <li>• Simpan file PDF untuk keperluan masa depan</li>
@@ -476,8 +497,9 @@ export default function ClaimPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </motion.div>
+      </main>
     </div>
+    </MotionConfig>
   );
 }

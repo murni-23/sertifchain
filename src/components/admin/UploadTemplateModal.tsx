@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { LayerEditor, DEFAULT_POSITIONS } from "@/components/admin/LayerEditor";
 import toast from "react-hot-toast";
-import { Upload, Plus, ImageIcon } from "lucide-react";
+import { Check, Upload, Plus, ImageIcon } from "lucide-react";
 import type { TextPosition } from "@/lib/pdf/generateCertificate";
 
 interface UploadTemplateModalProps {
@@ -100,7 +100,7 @@ export function UploadTemplateModal({ isOpen, onClose, onSuccess }: UploadTempla
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal simpan template");
-      toast.success("Template berhasil disimpan! 🎨");
+      toast.success("Template berhasil disimpan");
       handleClose();
       onSuccess();
     } catch (err: any) {
@@ -131,7 +131,7 @@ export function UploadTemplateModal({ isOpen, onClose, onSuccess }: UploadTempla
           <div key={s} className="flex items-center gap-2">
             <div className={`w-8 h-8 border-2 border-black flex items-center justify-center font-bold text-sm
               ${step === s ? "bg-yellow" : step > s ? "bg-mint" : "bg-cream"}`}>
-              {step > s ? "✓" : s}
+              {step > s ? <Check className="h-4 w-4" /> : s}
             </div>
             <span className="text-sm font-semibold hidden sm:block">{label}</span>
             {s < 3 && <div className="w-6 h-0.5 bg-slate-200" />}
@@ -164,12 +164,12 @@ export function UploadTemplateModal({ isOpen, onClose, onSuccess }: UploadTempla
                 <button key={o} type="button" onClick={() => setOrientation(o)}
                   className={`py-3 border-3 border-black font-bold transition-all text-sm
                     ${orientation === o ? "bg-yellow shadow-brutal translate-x-0.5 translate-y-0.5" : "bg-white shadow-brutal hover:shadow-brutal-sm"}`}>
-                  {o === "landscape" ? "🖼 Landscape (Horisontal)" : "📄 Portrait (Vertikal)"}
+                  {o === "landscape" ? "Landscape (horizontal)" : "Portrait (vertikal)"}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-black/60 font-semibold mt-2">
-              💡 Sesuaikan dengan orientasi gambar desain Anda
+            <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-[#81788a]">
+              Sesuaikan dengan orientasi gambar desain Anda
             </p>
           </div>
 
@@ -184,7 +184,7 @@ export function UploadTemplateModal({ isOpen, onClose, onSuccess }: UploadTempla
       {step === 2 && (
         <div className="space-y-4">
           <div className="p-3 bg-sky/20 border-2 border-black text-sm font-semibold">
-            <p className="font-bold mb-1">📐 Tips desain:</p>
+            <p className="font-bold mb-1">Tips desain:</p>
             <ul className="space-y-0.5 text-black/70 text-xs">
               <li>• Buat di Canva, Word, Photoshop → export <strong>PNG atau JPG</strong></li>
               <li>• Biarkan area <strong>kosong</strong> di tempat nama siswa, tanggal, dll</li>
@@ -216,8 +216,9 @@ export function UploadTemplateModal({ isOpen, onClose, onSuccess }: UploadTempla
           </div>
 
           {uploadedUrl && (
-            <div className="p-3 bg-mint/30 border-2 border-black text-sm font-bold">
-              ✓ Gambar sudah terupload — klik "Atur Posisi Teks" untuk lanjut
+            <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-medium text-emerald-800">
+              <Check className="h-4 w-4 shrink-0" />
+              Gambar sudah terupload — klik "Atur Posisi Teks" untuk lanjut
             </div>
           )}
 
@@ -244,7 +245,7 @@ export function UploadTemplateModal({ isOpen, onClose, onSuccess }: UploadTempla
       {step === 3 && (
         <div className="space-y-4">
           <div className="p-2 bg-yellow/30 border-2 border-black text-xs font-bold">
-            💡 Pilih layer di kiri → klik preview gambar atau pakai tombol ← → ↑ ↓ untuk pindahkan posisi
+            Pilih layer di kiri, klik preview gambar, atau gunakan tombol arah untuk memindahkan posisi.
           </div>
 
           <LayerEditor

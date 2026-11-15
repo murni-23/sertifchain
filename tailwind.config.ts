@@ -16,10 +16,10 @@ const config: Config = {
         black: "#1F2937",
         white: "#FFFFFF",
         yellow: {
-          DEFAULT: "#E8F2FA",
-          light: "#F3F8FC",
+          DEFAULT: "#FFC928",
+          light: "#FFF7DB",
         },
-        sky: "#E5F1F8",
+        sky: "#F1E9F8",
         pink: {
           DEFAULT: "#F7E8EE",
           light: "#FCF4F7",
@@ -33,9 +33,9 @@ const config: Config = {
           DEFAULT: "#EEEAF7",
           light: "#F7F5FB",
         },
-        cream: "#FFF176",
+        cream: "#FBFAFD",
         slate: {
-          50: "#FFF176",
+          50: "#FBFAFD",
           100: "#F1F5F9",
           200: "#E2E8F0",
           300: "#CBD5E1",
