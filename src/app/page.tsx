@@ -161,33 +161,97 @@ export default function HomePage() {
               </div>
 
               <motion.div
-                initial={{ opacity: 0, scale: 0.92, rotate: 2 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ delay: 0.18, duration: 0.6, ease: "easeOut" }}
-                className="mx-auto w-full max-w-[19rem] rounded-2xl border border-white/60 bg-white p-5 text-[#3e2852] shadow-[0_22px_48px_rgba(31,15,48,0.22)]"
+                initial={{ opacity: 0, scale: 0.9, rotateY: -18, rotateX: 8 }}
+                animate={{ opacity: 1, scale: 1, rotateY: -8, rotateX: 4 }}
+                transition={{ delay: 0.18, duration: 0.75, ease: "easeOut" }}
+                whileHover={{ rotateY: -3, rotateX: 1, y: -4 }}
+                style={{ transformStyle: "preserve-3d", perspective: 1000 }}
+                className="relative mx-auto w-full max-w-[23rem] py-5"
               >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-[10px] font-bold tracking-[0.18em] text-[#8e7c9f]">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-7 bottom-2 top-8 rotate-[-7deg] rounded-[1.15rem] bg-[#d6c6e5] shadow-[0_24px_40px_rgba(24,12,38,0.32)]"
+                  style={{ transform: "translateZ(-28px) rotate(-7deg)" }}
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-4 bottom-4 top-5 rotate-[4deg] rounded-[1.15rem] bg-[#fff0c1] shadow-[0_18px_32px_rgba(24,12,38,0.22)]"
+                  style={{ transform: "translateZ(-14px) rotate(4deg)" }}
+                />
+                <svg
+                  viewBox="0 0 420 300"
+                  role="img"
+                  aria-labelledby="certificate-title certificate-description"
+                  className="relative block w-full overflow-visible drop-shadow-[0_22px_24px_rgba(24,12,38,0.3)]"
+                  style={{ transform: "translateZ(12px) rotate(-2deg)" }}
+                >
+                  <title id="certificate-title">Sertifikat digital SertifChain</title>
+                  <desc id="certificate-description">
+                    Ilustrasi sertifikat profesional dengan bingkai emas, tanda tangan, dan medali verifikasi.
+                  </desc>
+                  <defs>
+                    <linearGradient id="certificate-paper" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#fffefb" />
+                      <stop offset="1" stopColor="#f4eff8" />
+                    </linearGradient>
+                    <linearGradient id="certificate-gold" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#f8df98" />
+                      <stop offset="0.5" stopColor="#c99a3c" />
+                      <stop offset="1" stopColor="#f5d77f" />
+                    </linearGradient>
+                    <linearGradient id="certificate-seal" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#8554a8" />
+                      <stop offset="1" stopColor="#4c246c" />
+                    </linearGradient>
+                    <filter id="certificate-soft-shadow" x="-30%" y="-30%" width="160%" height="170%">
+                      <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="#160d20" floodOpacity=".24" />
+                    </filter>
+                  </defs>
+
+                  <g filter="url(#certificate-soft-shadow)">
+                    <rect x="14" y="12" width="392" height="270" rx="13" fill="url(#certificate-paper)" />
+                    <rect x="22" y="20" width="376" height="254" rx="9" fill="none" stroke="url(#certificate-gold)" strokeWidth="2.5" />
+                    <rect x="29" y="27" width="362" height="240" rx="6" fill="none" stroke="#ded0e8" strokeWidth="1" />
+                    <path d="M30 74h360" stroke="url(#certificate-gold)" strokeWidth="2" />
+
+                    <circle cx="210" cy="48" r="15" fill="#5b2b82" />
+                    <path d="M203 48l5 5 10-11" fill="none" stroke="#f8df98" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
+                    <text x="210" y="91" textAnchor="middle" fill="#8a6e9d" fontSize="8" fontFamily="Arial, sans-serif" fontWeight="700" letterSpacing="2">
+                      SERTIFIKAT PENGHARGAAN
+                    </text>
+                    <text x="210" y="119" textAnchor="middle" fill="#39234e" fontSize="20" fontFamily="Georgia, serif" fontWeight="700">
+                      CERTIFICATE
+                    </text>
+                    <text x="210" y="136" textAnchor="middle" fill="#39234e" fontSize="11" fontFamily="Georgia, serif" fontWeight="700" letterSpacing="2">
+                      OF ACHIEVEMENT
+                    </text>
+                    <text x="210" y="158" textAnchor="middle" fill="#8a7b91" fontSize="8" fontFamily="Arial, sans-serif">
+                      Dengan bangga diberikan kepada
+                    </text>
+                    <path d="M109 179h202" stroke="#ddcda9" strokeWidth="1" />
+                    <text x="210" y="174" textAnchor="middle" fill="#5b2b82" fontSize="15" fontFamily="Georgia, serif" fontStyle="italic">
+                      Nama Penerima
+                    </text>
+                    <text x="210" y="195" textAnchor="middle" fill="#85798d" fontSize="7.5" fontFamily="Arial, sans-serif">
+                      Atas pencapaian dan dedikasi yang luar biasa
+                    </text>
+                    <path d="M63 224h81M276 224h81" stroke="#d7ccdf" strokeWidth="1" />
+                    <path d="M84 218c8-13 13 10 22-4 5-8 9 2 14-2" fill="none" stroke="#77518f" strokeLinecap="round" strokeWidth="1.5" />
+                    <path d="M298 214c8-10 14 9 21-1 6-7 11 4 17-3" fill="none" stroke="#77518f" strokeLinecap="round" strokeWidth="1.5" />
+                    <text x="103" y="236" textAnchor="middle" fill="#8a7b91" fontSize="6.5" fontFamily="Arial, sans-serif">
+                      DIREKTUR PROGRAM
+                    </text>
+                    <text x="317" y="236" textAnchor="middle" fill="#8a7b91" fontSize="6.5" fontFamily="Arial, sans-serif">
                       SERTIFIKAT DIGITAL
-                    </p>
-                    <div className="mt-3 h-2 w-28 rounded-full bg-[#eee8f4]" />
-                    <div className="mt-2 h-2 w-20 rounded-full bg-[#f4d87a]" />
-                  </div>
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff4c9] text-[#ae7c10]">
-                    <Award className="h-7 w-7" fill="currentColor" strokeWidth={1.6} />
-                  </span>
-                </div>
-                <div className="mt-7 border-t border-dashed border-[#ded5e7] pt-4">
-                  <div className="h-2 w-32 rounded-full bg-[#d9cce6]" />
-                  <div className="mt-2 h-2 w-24 rounded-full bg-[#eee8f4]" />
-                  <div className="mt-5 flex items-center justify-between">
-                    <div className="h-1.5 w-16 rounded-full bg-[#eee8f4]" />
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f1e9f8] text-[#74479b]">
-                      <BadgeCheck className="h-5 w-5" />
-                    </span>
-                  </div>
-                </div>
+                    </text>
+
+                    <path d="M350 178l-13 48 16-7 10 14 12-47" fill="#6c3e8c" />
+                    <path d="M372 185l13 42-16-6-10 14-11-46" fill="#8c5aab" />
+                    <circle cx="361" cy="176" r="29" fill="url(#certificate-gold)" />
+                    <circle cx="361" cy="176" r="23" fill="url(#certificate-seal)" stroke="#fff1c8" strokeWidth="2" />
+                    <path d="M361 162l4 8 9 1-6.5 6.3 1.5 9-8-4.2-8 4.2 1.5-9-6.5-6.3 9-1z" fill="#f7dc91" />
+                  </g>
+                </svg>
               </motion.div>
             </div>
           </motion.section>
@@ -198,7 +262,7 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.2 }}
             variants={reveal}
             transition={{ duration: 0.5, delay: 0.08 }}
-            className="mt-7 grid items-start gap-5 lg:grid-cols-[1.4fr_0.8fr]"
+            className="mt-7 grid items-stretch gap-5 lg:grid-cols-[1.4fr_0.8fr]"
           >
             <div className="rounded-3xl border border-[#eee9f3] bg-white p-5 shadow-[0_12px_36px_rgba(54,34,72,0.06)] sm:p-8">
               <div className="mb-6">
@@ -209,8 +273,7 @@ export default function HomePage() {
                   Klaim sertifikatmu
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-[#777080]">
-                  Masukkan nama lengkap dan kode unik dari bimbel untuk
-                  menemukan sertifikat.
+                  Masukkan nama lengkap dan kode unik untuk menemukan sertifikat.
                 </p>
               </div>
 
@@ -256,12 +319,12 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="flex flex-col">
               <Link href="/verify" className="block">
                 <motion.div
                   whileHover={{ y: -3 }}
                   whileTap={{ scale: 0.99 }}
-                  className="group flex min-h-28 items-center gap-4 rounded-2xl bg-[#ffc928] px-5 py-5 text-[#4c2865] shadow-[0_10px_24px_rgba(188,143,12,0.12)] transition-shadow hover:shadow-[0_16px_30px_rgba(188,143,12,0.2)] sm:px-6"
+                  className="group flex min-h-32 flex-1 items-center gap-4 rounded-2xl bg-[#ffc928] px-5 py-5 text-[#4c2865] shadow-[0_10px_24px_rgba(188,143,12,0.12)] transition-shadow hover:shadow-[0_16px_30px_rgba(188,143,12,0.2)] sm:px-6"
                 >
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/60 text-[#603582]">
                     <ShieldCheck className="h-6 w-6" fill="currentColor" strokeWidth={1.6} />
@@ -276,38 +339,6 @@ export default function HomePage() {
                 </motion.div>
               </Link>
 
-              <Link href="/admin/login" className="block">
-                <motion.div
-                  whileHover={{ y: -3 }}
-                  whileTap={{ scale: 0.99 }}
-                  className="group flex min-h-28 items-center gap-4 rounded-2xl border border-[#ece5f2] bg-white px-5 py-5 shadow-[0_10px_24px_rgba(54,34,72,0.05)] transition-shadow hover:shadow-[0_16px_30px_rgba(54,34,72,0.1)] sm:px-6"
-                >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#f2eaf8] text-[#603582]">
-                    <LockKeyhole className="h-6 w-6" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-bold text-[#3d2c4d]">Portal admin</span>
-                    <span className="mt-1 block text-xs text-[#81788a]">
-                      Kelola data siswa dan sertifikat
-                    </span>
-                  </span>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-[#80619a] transition-transform group-hover:translate-x-1" />
-                </motion.div>
-              </Link>
-
-              <div className="rounded-2xl border border-[#eee9f3] bg-[#f7f3fa] p-5">
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-[#79529b]">
-                    <KeyRound className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <h3 className="text-sm font-bold text-[#443353]">Belum punya kode unik?</h3>
-                    <p className="mt-1 text-xs leading-5 text-[#787080]">
-                      Hubungi bimbel penyelenggara untuk mendapatkan kode klaim sertifikat.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </motion.section>
 
