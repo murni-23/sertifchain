@@ -13,10 +13,10 @@
  * - Preview interaktif: klik gambar = pindah posisi layer aktif
  */
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Plus, Trash2, Move, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { FONT_OPTIONS } from "@/lib/pdf/generateCertificate";
+import { FONT_OPTIONS, wrapTextToLineLengths } from "@/lib/pdf/generateCertificate";
 import type { TextPosition, FontFamily } from "@/lib/pdf/generateCertificate";
 
 export const FIELD_OPTIONS: {
@@ -45,6 +45,7 @@ interface LayerEditorProps {
   selectedIdx: number | null;
   imageUrl: string;
   orientation: "landscape" | "portrait";
+  previewValues?: Partial<Record<TextPosition["field"], string>>;
   onPositionsChange: (positions: TextPosition[]) => void;
   onSelectedIdxChange: (idx: number | null) => void;
 }
@@ -54,10 +55,12 @@ export function LayerEditor({
   selectedIdx,
   imageUrl,
   orientation,
+  previewValues,
   onPositionsChange,
   onSelectedIdxChange,
 }: LayerEditorProps) {
   const previewRef = useRef<HTMLDivElement>(null);
+  const [lineTextDraft, setLineTextDraft] = useState("");
 
   const updatePos = (idx: number, fields: Partial<TextPosition>) => {
     onPositionsChange(positions.map((p, i) => i === idx ? { ...p, ...fields } : p));
@@ -106,6 +109,13 @@ export function LayerEditor({
   };
 
   const sel = selectedIdx !== null ? positions[selectedIdx] : null;
+  const selectedPreviewText = sel
+    ? previewValues?.[sel.field] || FIELD_OPTIONS.find(f => f.value === sel.field)?.example || "Preview"
+    : "";
+
+  useEffect(() => {
+    setLineTextDraft(wrapTextToLineLengths(selectedPreviewText, sel?.lineLengths));
+  }, [selectedIdx, selectedPreviewText, sel?.field]);
 
   return (
     <div className="border-3 border-black">
@@ -188,9 +198,9 @@ export function LayerEditor({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="text-xs font-bold text-black/60 uppercase">Ukuran (px)</label>
-                  <input type="number" min={6} max={120}
+                  <input type="number" min={1} max={120}
                     value={sel.fontSize}
-                    onChange={e => updatePos(selectedIdx, { fontSize: Math.max(6, Number(e.target.value)) })}
+                    onChange={e => updatePos(selectedIdx, { fontSize: Math.max(1, Number(e.target.value)) })}
                     className="w-full mt-1 px-3 py-2 border-2 border-black bg-white font-semibold text-sm focus:outline-none" />
                 </div>
                 <div>
@@ -211,21 +221,38 @@ export function LayerEditor({
                       placeholder="#000000" maxLength={7} />
                   </div>
                   {/* Live preview warna — teks contoh dengan warna & font aktual */}
-                  <div className="mt-2 p-2 border border-black/20 bg-white flex items-center justify-center min-h-8">
-                    <span style={{
-                      color: sel.color,
-                      fontWeight: sel.fontWeight === "bold" ? "bold" : "normal",
-                      fontSize: `${Math.max(10, Math.min(sel.fontSize * 0.5, 20))}px`,
-                    }}>
-                      {FIELD_OPTIONS.find(f => f.value === sel.field)?.example || "Preview"}
-                    </span>
+                  <div className="mt-2 border border-black/20 bg-white">
+                    <textarea
+                      aria-label="Preview teks; tekan Enter untuk mengatur baris"
+                      value={lineTextDraft}
+                      onChange={e => {
+                        const value = e.target.value;
+                        setLineTextDraft(value);
+                        const lines = value.split(/\r?\n/);
+                        const lineLengths = lines.length > 1
+                          ? lines.map(line => Math.max(1, line.trimEnd().length))
+                          : undefined;
+                        updatePos(selectedIdx, { lineLengths });
+                      }}
+                      rows={3}
+                      className="w-full min-h-16 p-2 resize-y focus:outline-none whitespace-pre"
+                      style={{
+                        color: sel.color,
+                        fontWeight: sel.fontWeight === "bold" ? "bold" : "normal",
+                        fontSize: `${Math.max(1, Math.min(sel.fontSize * 0.5, 20))}px`,
+                        textAlign: sel.align,
+                      }}
+                    />
                   </div>
+                  <p className="mt-1 text-xs text-black/50">
+                    Tekan Enter di preview untuk mengatur panjang tiap baris. Isi sertifikat tetap mengikuti data asli.
+                  </p>
                 </div>
               </div>
 
               {/* Alignment */}
               <div>
-                <label className="text-xs font-bold text-black/60 uppercase">Alignment</label>
+                <label className="text-xs font-bold text-black/60 uppercase">Perataan Teks</label>
                 <div className="flex gap-1 mt-1">
                   {(["left", "center", "right"] as const).map(a => (
                     <button key={a} type="button"
@@ -343,7 +370,7 @@ export function LayerEditor({
                   onClick={(e) => { e.stopPropagation(); onSelectedIdxChange(idx); }}
                 >
                   <div
-                    className={`px-1.5 py-0.5 whitespace-nowrap border-2 shadow-md
+                    className={`px-1.5 py-0.5 whitespace-pre-line border-2 shadow-md
                       ${isSelected ? "border-white ring-1 ring-black" : "border-transparent"}`}
                     style={{
                       // Warna background = warna teks (gelap/terang otomatis)
@@ -352,11 +379,14 @@ export function LayerEditor({
                       color: isLight(pos.color) ? "#000" : "#fff",
                       fontWeight: pos.fontWeight === "bold" ? "bold" : "normal",
                       // Skala font relatif ke preview
-                      fontSize: `${Math.max(7, Math.min(pos.fontSize * 0.2, 14))}px`,
+                      fontSize: `${Math.max(1, Math.min(pos.fontSize * 0.2, 14))}px`,
                       textShadow: "none",
+                      textAlign: pos.align,
                     }}
                   >
-                    {info?.example || pos.label}
+                    {idx === selectedIdx
+                      ? lineTextDraft
+                      : wrapTextToLineLengths(previewValues?.[pos.field] || info?.example || pos.label, pos.lineLengths)}
                   </div>
                 </div>
               );

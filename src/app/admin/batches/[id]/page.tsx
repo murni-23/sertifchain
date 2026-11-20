@@ -226,10 +226,12 @@ export default function BatchDetailPage() {
       <Card variant="yellow">
         <CardHeader>
           <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div className="flex-1">
-              <CardTitle as="h2" className="text-3xl mb-2">{batch.name}</CardTitle>
+            <div className="flex-1 min-w-0">
+              <CardTitle as="h2" className="text-3xl mb-2 break-words [overflow-wrap:anywhere]">{batch.name}</CardTitle>
               {batch.description && (
-                <CardDescription className="text-base">{batch.description}</CardDescription>
+                <CardDescription className="text-base break-words [overflow-wrap:anywhere]">
+                  {batch.description}
+                </CardDescription>
               )}
               {batch.certificate_templates && (
                 <div className="mt-2">

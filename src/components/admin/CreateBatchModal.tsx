@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
-import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { TemplatePreviewCard } from "@/components/admin/TemplatePreviewCard";
 import type { TemplateItem } from "@/components/admin/TemplatePreviewCard";
@@ -127,15 +126,24 @@ export function CreateBatchModal({ isOpen, onClose, onSuccess }: CreateBatchModa
         {/* STEP 1 — Info batch */}
         {step === 1 && (
           <div className="space-y-4">
-            <Input
-              label="Nama Batch"
-              name="name"
-              placeholder="Contoh: Batch Agustus 2026"
-              value={formData.name}
-              onChange={handleChange}
-              error={errors.name}
-              required
-            />
+            <div>
+              <label className="block mb-2 text-sm font-bold text-black uppercase tracking-wide">
+                Nama Batch
+              </label>
+              <textarea
+                name="name"
+                placeholder="Contoh: Batch Agustus 2026"
+                value={formData.name}
+                onChange={handleChange}
+                rows={2}
+                required
+                className={`w-full px-4 py-3 text-lg font-semibold bg-white border-3 border-black shadow-brutal
+                  focus:outline-none focus:shadow-brutal-sm transition-shadow resize-y placeholder:text-black/40
+                  ${errors.name ? "border-red-500" : ""}`}
+              />
+              {errors.name && <p className="mt-1 text-sm font-semibold text-red-600">{errors.name}</p>}
+              <p className="mt-1 text-xs text-black/50">Tekan Enter untuk membuat baris baru pada sertifikat.</p>
+            </div>
 
             <div>
               <label className="block mb-2 text-sm font-bold text-black uppercase tracking-wide">
@@ -164,7 +172,7 @@ export function CreateBatchModal({ isOpen, onClose, onSuccess }: CreateBatchModa
             <div className="p-3 bg-cream border-2 border-black flex items-center justify-between flex-shrink-0">
               <div>
                 <span className="text-xs font-bold text-black/60 uppercase">Batch:</span>
-                <span className="font-bold ml-2">{formData.name}</span>
+                <span className="font-bold ml-2 whitespace-pre-line">{formData.name}</span>
               </div>
               <button type="button" onClick={() => setStep(1)} className="text-xs font-bold underline hover:no-underline">
                 Ubah

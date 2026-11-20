@@ -174,11 +174,11 @@ export default function BatchesPage() {
                       </button>
                     </div>
                   </div>
-                  <CardTitle as="h3" className="text-xl">
+                  <CardTitle as="h3" className="text-xl min-w-0 break-words [overflow-wrap:anywhere]">
                     {batch.name}
                   </CardTitle>
                   {batch.description && (
-                    <CardDescription className="line-clamp-2">
+                    <CardDescription className="line-clamp-2 break-words [overflow-wrap:anywhere]">
                       {batch.description}
                     </CardDescription>
                   )}

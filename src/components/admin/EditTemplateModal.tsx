@@ -27,6 +27,7 @@ export function EditTemplateModal({ isOpen, template, onClose, onSuccess }: Edit
   const [orientation, setOrientation] = useState<"landscape" | "portrait">("landscape");
   const [positions, setPositions] = useState<TextPosition[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [previewBatchName, setPreviewBatchName] = useState<string | null>(null);
 
   // Gambar
   const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
@@ -49,6 +50,26 @@ export function EditTemplateModal({ isOpen, template, onClose, onSuccess }: Edit
     setNewImageFile(null);
     setNewImagePreviewUrl("");
     setSelectedIdx(null);
+    setPreviewBatchName(null);
+
+    let isCurrent = true;
+    const loadPreviewBatch = async () => {
+      try {
+        const res = await fetch(`/api/templates/${template.id}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Gagal memuat contoh batch untuk preview");
+        if (isCurrent) setPreviewBatchName(data.previewBatchName || null);
+      } catch (error) {
+        if (isCurrent) {
+          toast.error(error instanceof Error ? error.message : "Gagal memuat contoh batch untuk preview");
+        }
+      }
+    };
+    loadPreviewBatch();
+
+    return () => {
+      isCurrent = false;
+    };
   }, [template, isOpen]);
 
   // ── Dropzone ganti gambar ──
@@ -217,6 +238,7 @@ export function EditTemplateModal({ isOpen, template, onClose, onSuccess }: Edit
             selectedIdx={selectedIdx}
             imageUrl={previewImage}
             orientation={orientation}
+            previewValues={previewBatchName ? { batch: previewBatchName } : undefined}
             onPositionsChange={setPositions}
             onSelectedIdxChange={setSelectedIdx}
           />

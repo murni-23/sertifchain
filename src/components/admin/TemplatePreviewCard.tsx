@@ -237,10 +237,12 @@ export function TemplatePreviewCard({
       {/* Info area */}
       <div className="p-4 flex-1 flex flex-col gap-3">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <h3 className="font-bold text-lg leading-tight">{template.name}</h3>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-lg leading-tight break-words [overflow-wrap:anywhere]">{template.name}</h3>
             {template.description && (
-              <p className="text-sm text-black/60 mt-1 line-clamp-2">{template.description}</p>
+            <p className="text-sm text-black/60 mt-1 line-clamp-2 break-words [overflow-wrap:anywhere]">
+              {template.description}
+            </p>
             )}
           </div>
           <StyleBadge style={template.config?.style || "custom"} hasImage={hasImage} />

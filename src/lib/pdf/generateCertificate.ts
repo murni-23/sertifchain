@@ -40,6 +40,7 @@ export interface TextPosition {
   color: string;            // hex, contoh: "#000000"
   align: "center" | "left" | "right";
   label: string;
+  lineLengths?: number[];
 }
 
 export interface TemplateConfig {
@@ -55,6 +56,32 @@ export interface TemplateConfig {
   showStars?: boolean;
   showWatermark?: boolean;
   footerText: string;
+}
+
+export function wrapTextToLineLengths(value: string, lineLengths?: number[]): string {
+  if (!lineLengths?.length) return value;
+  const widths = lineLengths.map(length => Math.max(1, Math.floor(length)));
+
+  return value.split(/\r?\n/).map(sourceLine => {
+    const words = sourceLine.trim().split(/\s+/).filter(Boolean);
+    if (words.length === 0) return "";
+
+    const lines: string[] = [];
+    let currentLine = "";
+
+    for (const word of words) {
+      const maxLength = widths[Math.min(lines.length, widths.length - 1)];
+      if (currentLine && currentLine.length + 1 + word.length > maxLength) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = currentLine ? `${currentLine} ${word}` : word;
+      }
+    }
+
+    if (currentLine) lines.push(currentLine);
+    return lines.join("\n");
+  }).join("\n");
 }
 
 export interface CertificateData {
@@ -564,31 +591,29 @@ async function generateCustomImagePDF(data: CertificateData): Promise<Uint8Array
     const refX = (pos.x / 100) * width;
     const refY = (pos.y / 100) * height;
 
-    // Lebar teks aktual
-    const textWidth = font.widthOfTextAtSize(value, fontSize);
+    const lines = wrapTextToLineLengths(value, pos.lineLengths).split(/\r?\n/);
+    const lineHeight = fontSize * 1.2;
+    const baselineCenter = refY - fontSize * 0.25;
 
-    // Hitung drawX berdasarkan alignment
-    // - left:   refX = titik kiri teks
-    // - center: refX = titik tengah teks
-    // - right:  refX = titik kanan teks
-    let drawX: number;
-    if (pos.align === "center") {
-      drawX = refX - textWidth / 2;
-    } else if (pos.align === "right") {
-      drawX = refX - textWidth;
-    } else {
-      drawX = refX;
-    }
+    lines.forEach((line, lineIndex) => {
+      if (!line) return;
 
-    // Clamp agar tidak keluar batas halaman (padding 5px)
-    drawX = Math.max(5, Math.min(drawX, width - textWidth - 5));
+      const textWidth = font.widthOfTextAtSize(line, fontSize);
+      let drawX = refX;
+      if (pos.align === "center") {
+        drawX -= textWidth / 2;
+      } else if (pos.align === "right") {
+        drawX -= textWidth;
+      }
+      drawX = Math.max(5, Math.min(drawX, width - textWidth - 5));
 
-    page.drawText(value, {
-      x: drawX,
-      y: refY,
-      size: fontSize,
-      font,
-      color,
+      page.drawText(line, {
+        x: drawX,
+        y: baselineCenter + ((lines.length - 1) / 2 - lineIndex) * lineHeight,
+        size: fontSize,
+        font,
+        color,
+      });
     });
   }
 

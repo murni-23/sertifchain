@@ -24,7 +24,21 @@ export async function GET(
       return NextResponse.json({ error: "Template tidak ditemukan" }, { status: 404 });
     }
 
-    return NextResponse.json({ template });
+    const { data: previewBatch, error: previewBatchError } = await supabase
+      .from("batches")
+      .select("name")
+      .eq("template_id", params.id)
+      .eq("admin_id", session.user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (previewBatchError) {
+      console.error("GET /api/templates/[id] preview batch error:", previewBatchError);
+      return NextResponse.json({ error: "Gagal memuat contoh batch untuk preview" }, { status: 500 });
+    }
+
+    return NextResponse.json({ template, previewBatchName: previewBatch?.name || null });
   } catch (err) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
@@ -40,7 +54,15 @@ export async function PATCH(
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await request.json();
-    const { name, description, config, is_active } = body;
+    const {
+      name,
+      description,
+      config,
+      is_active,
+      background_image_url,
+      text_positions,
+      page_orientation,
+    } = body;
 
     const supabase = createServiceClient();
 
@@ -49,6 +71,9 @@ export async function PATCH(
     if (description !== undefined) updateData.description = description?.trim() || null;
     if (config !== undefined) updateData.config = config;
     if (is_active !== undefined) updateData.is_active = is_active;
+    if (background_image_url !== undefined) updateData.background_image_url = background_image_url;
+    if (text_positions !== undefined) updateData.text_positions = text_positions;
+    if (page_orientation !== undefined) updateData.page_orientation = page_orientation;
 
     const { data: template, error } = await supabase
       .from("certificate_templates")
